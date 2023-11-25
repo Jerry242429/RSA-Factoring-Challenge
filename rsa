@@ -1,18 +1,22 @@
-#!/usr/bin/bash
-from sys import argv
+#!/bin/bash
 
-with open(argv[1]) as f:
-    for l in f:
-        n = int(l)
-        print("{:d}=".format(n), end="")
-        if n % 2 == 0:
-            print("{}*2".format(n//2))
-            continue
-        for i in range(3, n, 2):
-            if n % i == 0:
-                factor = n//i
-                for j in range(3, factor, 2):
-                    if factor % j == 0 or i % j == 0:
-                        break
-                print("{}*{}".format(factor, i))
-                break
+# Usage function
+usage() {
+	echo "Usage: $0 <file>"
+	echo "  <file>  File containing positive integers (one per line)"
+}
+
+# Check if file parameter is provided and exists
+if [ -z "$1" ] || [ ! -f "$1" ]; then
+	usage
+	exit 1
+fi
+
+# Read the file line by line
+filename="$1"
+while IFS= read -r number; do
+	result=$(factor "$number")
+	second_num=$(echo $result | tr ":" "=" | cut -d " " -f 2 | tr -d " ")
+	third_num=$(expr $number / $second_num)
+	echo "$number=$third_num*$second_num"
+done < "$filename"
