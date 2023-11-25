@@ -1,6 +1,6 @@
 #!/usr/bin/bash
-while read NUM;
+while read NUMBERS;
 do
-    factors=($(factor $NUM))
-    echo "$NUM=$(($NUM/${factors[1]}))*${factors[1]}"
+    factors=($(factor $NUMBERS))
+    echo "$NUMBERS=$(($NUMBERS/${factors[1]}))*${factors[1]}"
 done < $FILE	
